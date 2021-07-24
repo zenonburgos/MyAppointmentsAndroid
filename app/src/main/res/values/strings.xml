@@ -21,4 +21,8 @@
     <string name="type1">Consulta</string>
     <string name="type2">Examen</string>
     <string name="type3">Operación</string>
+    <string name="btn_next">Siguiente</string>
+    <string name="label_doctor">Médico</string>
+    <string name="label_scheduled_date">Fecha para la cita</string>
+    <string name="btn_confirm">Confirmar</string>
 </resources>
