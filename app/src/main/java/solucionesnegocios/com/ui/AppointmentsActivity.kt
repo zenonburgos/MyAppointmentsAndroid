@@ -1,9 +1,10 @@
-package solucionesnegocios.com
+package solucionesnegocios.com.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_appointments.*
+import solucionesnegocios.com.R
 import solucionesnegocios.com.model.Appointment
 
 class AppointmentsActivity : AppCompatActivity() {

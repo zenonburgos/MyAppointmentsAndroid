@@ -1,11 +1,12 @@
-package solucionesnegocios.com
+package solucionesnegocios.com.ui
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_menu.*
+import solucionesnegocios.com.PreferenceHelper
 import solucionesnegocios.com.PreferenceHelper.set
+import solucionesnegocios.com.R
 
 class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

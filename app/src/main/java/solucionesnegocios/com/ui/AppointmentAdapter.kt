@@ -1,10 +1,11 @@
-package solucionesnegocios.com
+package solucionesnegocios.com.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_appointment.view.*
+import solucionesnegocios.com.R
 import solucionesnegocios.com.model.Appointment
 
 class AppointmentAdapter(private val appointments: ArrayList<Appointment>)
