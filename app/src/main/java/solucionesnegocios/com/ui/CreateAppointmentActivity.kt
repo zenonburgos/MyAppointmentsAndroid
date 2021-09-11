@@ -82,14 +82,14 @@ class CreateAppointmentActivity : AppCompatActivity() {
                 call: Call<ArrayList<Specialty>>,
                 response: Response<ArrayList<Specialty>>
             ) {
-                if (response.isSuccessful) { //200..300
+                if (response.isSuccessful) { // [200...300)
                     val specialties = response.body()
-                    val specialtiesOptions  = ArrayList<String>()
+                    val specialtyOptions  = ArrayList<String>()
 
                     specialties?.forEach {
-                        specialtiesOptions.add(it.name)
+                        specialtyOptions.add(it.name)
                     }
-                    spinnerSpecialties.adapter = ArrayAdapter<String>(this@CreateAppointmentActivity, android.R.layout.simple_list_item_1, specialtiesOptions)
+                    spinnerSpecialties.adapter = ArrayAdapter<String>(this@CreateAppointmentActivity, android.R.layout.simple_list_item_1, specialtyOptions)
 
 
                 }

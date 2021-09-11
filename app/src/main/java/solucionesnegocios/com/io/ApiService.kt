@@ -14,7 +14,7 @@ interface ApiService {
     companion object Factory {
         // Local IP to use on an emulator
         // php artisan serve --host=0.0.0.0
-        private const val BASE_URL = "http://10.0.2.2:8000/api/"
+        private const val BASE_URL = "http://164.90.143.11/api/"
 
         // private const val BASE_URL = "http://164.90.143.11/api/"
 
