@@ -2,6 +2,8 @@ package solucionesnegocios.com.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -11,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_create_appointment.*
 import kotlinx.android.synthetic.main.card_view_step_one.*
 import kotlinx.android.synthetic.main.card_view_step_three.*
 import kotlinx.android.synthetic.main.card_view_step_two.*
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,9 +73,49 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
         loadSpecialties()
         listenSpecialtyChanges()
+        listenDoctorAndDateChanges()
 
-        val doctorsOptions = arrayOf("Doctor A", "Doctor B", "Doctor C")
-        spinnerDoctors.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, doctorsOptions)
+    }
+
+    private fun listenDoctorAndDateChanges() {
+        //doctors
+        spinnerDoctors.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(
+                adapter: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val doctor = adapter?.getItemAtPosition(position) as Doctor
+                loadHours(doctor.id, etScheduledDate.text.toString())
+            }
+        }
+
+        //scheduled date
+        etScheduledDate.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val doctor = spinnerDoctors.selectedItem as Doctor
+                loadHours(doctor.id, etScheduledDate.text.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun loadHours(doctorId: Int, date: String){
+        Toast.makeText(this, "doctor: $doctorId, date: $date", Toast.LENGTH_SHORT).show()
     }
 
     private fun loadSpecialties(){
