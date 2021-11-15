@@ -20,6 +20,7 @@ import retrofit2.Response
 import solucionesnegocios.com.R
 import solucionesnegocios.com.io.ApiService
 import solucionesnegocios.com.model.Doctor
+import solucionesnegocios.com.model.Schedule
 import solucionesnegocios.com.model.Specialty
 import java.util.*
 import kotlin.collections.ArrayList
@@ -115,7 +116,21 @@ class CreateAppointmentActivity : AppCompatActivity() {
     }
 
     private fun loadHours(doctorId: Int, date: String){
-        Toast.makeText(this, "doctor: $doctorId, date: $date", Toast.LENGTH_SHORT).show()
+        val call = apiService.getHours(doctorId, date)
+        call.enqueue(object: Callback<Schedule> {
+            override fun onResponse(call: Call<Schedule>, response: Response<Schedule>) {
+                if (response.isSuccessful){
+                    val schedule = response.body()
+                    Toast.makeText(this@CreateAppointmentActivity, "morning: ${schedule?.morning?.size}, afternoon: ${schedule?.afternoon?.size}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Schedule>, t: Throwable) {
+                Toast.makeText(this@CreateAppointmentActivity, getString(R.string.error_loading_hours), Toast.LENGTH_SHORT).show()
+            }
+
+        })
+        //Toast.makeText(this, "doctor: $doctorId, date: $date", Toast.LENGTH_SHORT).show()
     }
 
     private fun loadSpecialties(){
@@ -212,11 +227,12 @@ class CreateAppointmentActivity : AppCompatActivity() {
         val listener = DatePickerDialog.OnDateSetListener { datePicker, y, m, d ->
             // Toast.makeText(this, "$y-$m-$y", Toast.LENGTH_SHORT).show()
             selectedCalendar.set(y, m, d)
+
             etScheduledDate.setText(
                 resources.getString(
                     R.string.date_format,
                     y,
-                    m.twoDigits(),
+                    (m+1).twoDigits(),
                     d.twoDigits()
                 )
             )
