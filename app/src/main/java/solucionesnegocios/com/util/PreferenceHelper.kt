@@ -1,4 +1,4 @@
-package solucionesnegocios.com
+package solucionesnegocios.com.util
 
 import android.content.Context
 import android.content.SharedPreferences

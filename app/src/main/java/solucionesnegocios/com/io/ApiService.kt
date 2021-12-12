@@ -6,8 +6,10 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import solucionesnegocios.com.io.response.LoginResponse
 import solucionesnegocios.com.model.Doctor
 import solucionesnegocios.com.model.Schedule
 import solucionesnegocios.com.model.Specialty
@@ -24,10 +26,14 @@ interface ApiService {
     fun getHours(@Query("doctor_id") doctorId: Int, @Query("date") date: String):
             Call<Schedule>
 
+    @POST("login")
+    fun postLogin(@Query("email") email: String, @Query("password") password: String):
+            Call<LoginResponse>
+
     companion object Factory {
         // Local IP to use on an emulator
         // php artisan serve --host=0.0.0.0
-        private const val BASE_URL = "http://165.227.127.76/api/"
+        private const val BASE_URL = "http://165.227.102.153/api/"
 
         // private const val BASE_URL = "http://164.90.143.11/api/"
 
