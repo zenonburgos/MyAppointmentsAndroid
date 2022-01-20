@@ -51,10 +51,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun performLogin(){
-        val call = apiService.postLogin(etEmail.text.toString(), etPassword.text.toString())
+        val email = etEmail.text.toString()
+        val password = etPassword.text.toString()
+
+        if (email.trim().isEmpty() || password.trim().isEmpty()){
+            toast(getString(R.string.error_empty_credentials))
+        }
+
+        val call = apiService.postLogin(email, password)
         call.enqueue(object: Callback<LoginResponse>{
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                //Creo que no entra a este if
+
                 if(response.isSuccessful){
                     val loginResponse = response.body()
                     if(loginResponse == null){
@@ -63,12 +70,13 @@ class MainActivity : AppCompatActivity() {
                     }
                     if(loginResponse.success){
                         createSessionPreference(loginResponse.jwt)
+                        toast(getString(R.string.welcome_name, loginResponse.user.name))
                         goToMenuActivity()
                     }else{
                         toast(getString(R.string.error_invalid_credentials))
                     }
                 }else{
-                    toast("No se pudo conectar")
+                    toast(getString(R.string.error_login_response))
                 }
             }
 
