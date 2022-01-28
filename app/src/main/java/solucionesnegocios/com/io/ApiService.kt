@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import solucionesnegocios.com.io.response.LoginResponse
+import solucionesnegocios.com.model.Appointment
 import solucionesnegocios.com.model.Doctor
 import solucionesnegocios.com.model.Schedule
 import solucionesnegocios.com.model.Specialty
@@ -29,6 +30,10 @@ interface ApiService {
 
     @POST("logout")
     fun postLogout(@Header("Authorization") authHeader: String): Call<Void>
+
+    @GET("appointments")
+    fun getAppointments(@Header("Authorization") authHeader: String):
+            Call<ArrayList<Appointment>>
 
     companion object Factory {
         // Local IP to use on an emulator

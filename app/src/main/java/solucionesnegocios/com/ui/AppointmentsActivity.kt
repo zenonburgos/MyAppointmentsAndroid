@@ -4,26 +4,61 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_appointments.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import solucionesnegocios.com.R
+import solucionesnegocios.com.io.ApiService
 import solucionesnegocios.com.model.Appointment
+import solucionesnegocios.com.util.PreferenceHelper
+import solucionesnegocios.com.util.PreferenceHelper.get
+import solucionesnegocios.com.util.toast
 
 class AppointmentsActivity : AppCompatActivity() {
+
+    private val apiService: ApiService by lazy {
+        ApiService.create()
+    }
+
+    private val preferences by lazy{
+        PreferenceHelper.defaultPrefs(this)
+    }
+
+    private val appointmentAdapter =
+        AppointmentAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_appointments)
 
-        val appointments = ArrayList<Appointment>()
-        appointments.add(
-            Appointment(1, "Médico Test", "12/12/2020", "3:00 PM")
-        )
-        appointments.add(
-            Appointment(2, "Médico BB", "15/12/2020", "4:30 PM")
-        )
-        appointments.add(
-            Appointment(3, "Médico CC", "17/12/2020", "7:00 AM")
-        )
+        loadAppointments()
 
         rvAppointments.layoutManager = LinearLayoutManager(this)
-        rvAppointments.adapter = AppointmentAdapter(appointments)
+        rvAppointments.adapter = appointmentAdapter
+    }
+
+    private fun loadAppointments(){
+        val jwt = preferences["jwt", ""]
+        val call = apiService.getAppointments("Bearer $jwt")
+        call.enqueue(object: Callback<ArrayList<Appointment>> {
+            override fun onResponse(
+                call: Call<ArrayList<Appointment>>,
+                response: Response<ArrayList<Appointment>>
+            ) {
+                if(response.isSuccessful){
+                    val appointments = response.body()
+                    response.body()?.let {
+                        appointmentAdapter.appointments = it
+                        appointmentAdapter.notifyDataSetChanged()
+                    }
+
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Appointment>>, t: Throwable) {
+                toast(t.localizedMessage)
+            }
+
+        })
     }
 }
